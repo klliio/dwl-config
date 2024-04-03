@@ -1,0 +1,106 @@
+
+From f8761928cc1eb5c9c694cf43cf6442579ea40150 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Leonardo=20Hern=C3=A1ndez=20Hern=C3=A1ndez?=
+ <leohdz172@protonmail.com>
+Date: Sun, 4 Apr 2021 19:56:09 -0500
+Subject: [PATCH] add option to enable numlock/capslock
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Leonardo Hernández Hernández <leohdz172@proton.me>
+---
+ config.def.h |  4 ++++
+ dwl.c        | 31 ++++++++++++++++++++++++++-----
+ 2 files changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index a8ed61d..87f91d7 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -56,6 +56,10 @@ static const struct xkb_rule_names xkb_rules = {
+ 	.options = NULL,
+ };
+ 
++/* numlock and capslock */
++static const int numlock = 1;
++static const int capslock = 0;
++
+ static const int repeat_rate = 25;
+ static const int repeat_delay = 600;
+ 
+diff --git a/dwl.c b/dwl.c
+index 10d5a5b..962748b 100644
+--- a/dwl.c
++++ b/dwl.c
+@@ -13,6 +13,7 @@
+ #include <wayland-server-core.h>
+ #include <wlr/backend.h>
+ #include <wlr/backend/libinput.h>
++#include <wlr/interfaces/wlr_keyboard.h>
+ #include <wlr/render/allocator.h>
+ #include <wlr/render/wlr_renderer.h>
+ #include <wlr/types/wlr_compositor.h>
+@@ -336,6 +337,7 @@ static void zoom(const Arg *arg);
+ static const char broken[] = "broken";
+ static pid_t child_pid = -1;
+ static int locked;
++static uint32_t locked_mods = 0;
+ static void *exclusive_focus;
+ static struct wl_display *dpy;
+ static struct wlr_backend *backend;
+@@ -768,6 +770,8 @@ createkeyboard(struct wlr_keyboard *keyboard)
+ 	wlr_keyboard_set_keymap(keyboard, kb_group.wlr_group->keyboard.keymap);
+ 	wlr_keyboard_set_repeat_info(keyboard, repeat_rate, repeat_delay);
+ 
++	wlr_keyboard_notify_modifiers(keyboard, 0, 0, locked_mods, 0);
++
+ 	/* Add the new keyboard to the group */
+ 	wlr_keyboard_group_add_keyboard(kb_group.wlr_group, keyboard);
+ }
+@@ -2354,13 +2358,9 @@ setup(void)
+ 				XKB_KEYMAP_COMPILE_NO_FLAGS)))
+ 		die("failed to compile keymap");
+ 
++	wlr_seat_set_keyboard(seat, &kb_group.wlr_group->keyboard);
+ 	wlr_keyboard_set_keymap(&kb_group.wlr_group->keyboard, keymap);
+ 	wlr_keyboard_set_keymap(&vkb_group.wlr_group->keyboard, keymap);
+-	xkb_keymap_unref(keymap);
+-	xkb_context_unref(context);
+-
+-	wlr_keyboard_set_repeat_info(&kb_group.wlr_group->keyboard, repeat_rate, repeat_delay);
+-	wlr_keyboard_set_repeat_info(&vkb_group.wlr_group->keyboard, repeat_rate, repeat_delay);
+ 
+ 	/* Set up listeners for keyboard events */
+ 	LISTEN(&kb_group.wlr_group->keyboard.events.key, &kb_group.key, keypress);
+@@ -2368,6 +2368,27 @@ setup(void)
+ 	LISTEN(&vkb_group.wlr_group->keyboard.events.key, &vkb_group.key, keypress);
+ 	LISTEN(&vkb_group.wlr_group->keyboard.events.modifiers, &vkb_group.modifiers, keypressmod);
+ 
++	if (numlock) {
++		xkb_mod_index_t mod_index = xkb_keymap_mod_get_index(keymap, XKB_MOD_NAME_NUM);
++		if (mod_index != XKB_MOD_INVALID)
++			locked_mods |= (uint32_t)1 << mod_index;
++	}
++
++	if (capslock) {
++		xkb_mod_index_t mod_index = xkb_keymap_mod_get_index(keymap, XKB_MOD_NAME_CAPS);
++		if (mod_index != XKB_MOD_INVALID)
++			locked_mods |= (uint32_t)1 << mod_index;
++	}
++
++	if (locked_mods)
++		wlr_keyboard_notify_modifiers(&kb_group.wlr_group->keyboard, 0, 0, locked_mods, 0);
++
++	xkb_keymap_unref(keymap);
++	xkb_context_unref(context);
++
++	wlr_keyboard_set_repeat_info(&kb_group.wlr_group->keyboard, repeat_rate, repeat_delay);
++	wlr_keyboard_set_repeat_info(&vkb_group.wlr_group->keyboard, repeat_rate, repeat_delay);
++
+ 	kb_group.key_repeat_source = wl_event_loop_add_timer(
+ 			wl_display_get_event_loop(dpy), keyrepeat, &kb_group);
+ 	vkb_group.key_repeat_source = wl_event_loop_add_timer(
+-- 
+2.43.0
+
