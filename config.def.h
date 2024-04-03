@@ -22,7 +22,8 @@ static int log_level = WLR_ERROR;
 
 /* Autostart */
 static const char *const autostart[] = {
-        "wbg", "/path/to/your/image", NULL,
+        "wbg", "$HOME/Images/Wallpapers/Apocalypse.png", NULL,
+        "keepassxc", NULL,
         NULL /* terminate */
 };
 
