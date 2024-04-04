@@ -147,15 +147,15 @@ static const char *medianext[]    = { "$HOME/.config/scripts/player-controls.sh"
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
-	{ MODKEY,                    XKB_KEY_XF86MonBrightnessDown, spawn,      {.v = brightnessdown} }, /* brightness down */
-	{ MODKEY,                    XKB_KEY_XF86MonBrightnessUp,   spawn,      {.v = brightnessup} }, /* brightness up */
-	{ MODKEY,                    XKB_KEY_XF86AudioMute,         spawn,      {.v = volumemute} }, /* mute */
-	{ MODKEY,                    XKB_KEY_XF86AudioLowerVolume,  spawn,      {.v = volumedown} }, /* volume down */
-	{ MODKEY,                    XKB_KEY_XF86AudioRaiseVolume,  spawn,      {.v = volumeup} }, /* volume up */
-	{ MODKEY,                    XKB_KEY_XF86AudioPrev,         spawn,      {.v = mediaback} }, /* media back */
-	{ MODKEY,                    XKB_KEY_XF86AudioPause,        spawn,      {.v = mediatoggle} }, /* media pause */
-	{ MODKEY,                    XKB_KEY_XF86AudioPlay,         spawn,      {.v = mediatoggle} }, /* media play */
-	{ MODKEY,                    XKB_KEY_XF86AudioNext,         spawn,      {.v = medianext} }, /* media next */
+	{ 0,                    XKB_KEY_XF86MonBrightnessDown, spawn,      {.v = brightnessdown} }, /* brightness down */
+	{ 0,                    XKB_KEY_XF86MonBrightnessUp,   spawn,      {.v = brightnessup} }, /* brightness up */
+	{ 0,                    XKB_KEY_XF86AudioMute,         spawn,      {.v = volumemute} }, /* mute */
+	{ 0,                    XKB_KEY_XF86AudioLowerVolume,  spawn,      {.v = volumedown} }, /* volume down */
+	{ 0,                    XKB_KEY_XF86AudioRaiseVolume,  spawn,      {.v = volumeup} }, /* volume up */
+	{ 0,                    XKB_KEY_XF86AudioPrev,         spawn,      {.v = mediaback} }, /* media back */
+	{ 0,                    XKB_KEY_XF86AudioPause,        spawn,      {.v = mediatoggle} }, /* media pause */
+	{ 0,                    XKB_KEY_XF86AudioPlay,         spawn,      {.v = mediatoggle} }, /* media play */
+	{ 0,                    XKB_KEY_XF86AudioNext,         spawn,      {.v = medianext} }, /* media next */
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
 	{ MODKEY,                    XKB_KEY_Return,     spawn,          {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} }, /* move focus up stack */
