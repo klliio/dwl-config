@@ -33,7 +33,7 @@ static const Rule rules[] = {
 	/* examples: */
 	// { "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
 	// { "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
-	{ "keepassxc",  NULL,       1 << 8,       0,           -1 },
+    { NULL,  "KeePassXC",       1 << 8,       0,           -1 }, /* uses xwayland */
 };
 
 /* layout(s) */
