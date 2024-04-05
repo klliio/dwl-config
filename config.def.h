@@ -45,7 +45,7 @@ static const char *const autostart[] = {
 static const Rule rules[] = {
 	/* app_id           title             tags mask  isfloating  monitor  scratchkey */
     { NULL,            "KeePassXC",       1 << 8,       0,       -1,      'P' }, /* uses xwayland */
-    { "firefox",       NULL,              0,            0,       -1,      'B' }, /* uses xwayland */
+    { "Firefox",       NULL,              0,            0,       -1,      'B' }, /* uses xwayland */
 };
 
 /* layout(s) */
@@ -172,8 +172,8 @@ static const Key keys[] = {
 	{ 0,                    XKB_KEY_XF86AudioStop,              spawn,      {.v = mediatoggle} }, /* media pause */
 	{ 0,                    XKB_KEY_XF86AudioPlay,              spawn,      {.v = mediatoggle} }, /* media play */
 	{ 0,                    XKB_KEY_XF86AudioNext,              spawn,      {.v = medianext} }, /* media next */
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,          togglescratch,     {.v = scratchkeepassxc } },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,          togglescratch,     {.v = scratchfirefox } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,          focusortogglescratch,     {.v = scratchkeepassxc } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,          focusortogglescratch,     {.v = scratchfirefox } },
 	{ MODKEY,                    XKB_KEY_p,          spawn,             {.v = menucmd} },
 	{ MODKEY,                    XKB_KEY_Return,     spawn,             {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,        {.i = +1} }, /* move focus up stack */
