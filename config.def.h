@@ -5,10 +5,7 @@
                         (hex & 0xFF) / 255.0f }
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
-static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
-static const unsigned int borderpx         = 1;  /* border pixel of windows */
-static const float rootcolor[]             = COLOR(0xf9e2afff);
-static const float bordercolor[]           = COLOR(0x44444400); /* invisible when not focused */
+static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */ static const unsigned int borderpx         = 1;  /* border pixel of windows */ static const float rootcolor[]             = COLOR(0xf9e2afff); static const float bordercolor[]           = COLOR(0x00000000);
 static const float focuscolor[]            = COLOR(0xcba6f7ff);
 static const float urgentcolor[]           = COLOR(0xf38ba8ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
@@ -22,6 +19,16 @@ static int log_level = WLR_ERROR;
 
 /* Autostart */
 static const char *const autostart[] = {
+        "pipewire", NULL,
+        "wireplumber", NULL,
+        "pipewire-pulse", NULL,
+        "/usr/libexec/polkit-gnome-authentication-agent-1", NULL,
+        "mako", NULL,
+        "mpd", "/home/klliio//.config/mpd/mpd.conf", NULL,
+        "blueman-applet", NULL,
+        "/usr/bin/syncthing", "serve", "--no-browser", "--logfile=default", NULL,
+        "udiskie", "--automount", "--notify", NULL,
+        "/home/klliio/.config/scripts/gsettings.sh", NULL,
         "wbg", "/home/klliio/Images/Wallpapers/Apocalypse.png", NULL,
         "keepassxc", NULL,
         NULL /* terminate */
@@ -136,26 +143,26 @@ static const char *menucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *brightnessdown[]    = { "brightnessctl",   "s",  "5%-",  NULL };
 static const char *brightnessup[]      = { "brightnessctl",   "s",  "5%+",  NULL };
 
-static const char *volumemute[]    = { "pactl",   "set-sink-mute", "@DEFAULT_SINK@ toggle",        NULL };
-static const char *volumedown[]    = { "wpctl",   "set-volume",    "@DEFAULT_AUDIO_SINK@ 5%-",     NULL };
-static const char *volumeup[]      = { "wpctl",   "set-volume",    "-l",    "1",    "@DEFAULT_AUDIO_SINK@ 5%+", NULL };
+static const char *volumemute[]    = { "wpctl",   "set-mute",      "@DEFAULT_SINK@",    "toggle",        NULL };
+static const char *volumedown[]    = { "wpctl",   "set-volume",    "@DEFAULT_AUDIO_SINK@",  "5%-",     NULL };
+static const char *volumeup[]      = { "wpctl",   "set-volume",    "-l",    "1",    "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
 
-static const char *mediaback[]    = { "$HOME/.config/scripts/player-controls.sh",   "--prev",     NULL };
-static const char *mediatoggle[]    = { "$HOME/.config/scripts/player-controls.sh",   "--toggle",     NULL };
-static const char *medianext[]    = { "$HOME/.config/scripts/player-controls.sh",   "--next",     NULL };
+static const char *mediaback[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--prev",     NULL };
+static const char *mediatoggle[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--toggle",     NULL };
+static const char *medianext[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--next",     NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
-	{ 0,                    XKB_KEY_XF86MonBrightnessDown, spawn,      {.v = brightnessdown} }, /* brightness down */
-	{ 0,                    XKB_KEY_XF86MonBrightnessUp,   spawn,      {.v = brightnessup} }, /* brightness up */
-	{ 0,                    XKB_KEY_XF86AudioMute,         spawn,      {.v = volumemute} }, /* mute */
-	{ 0,                    XKB_KEY_XF86AudioLowerVolume,  spawn,      {.v = volumedown} }, /* volume down */
-	{ 0,                    XKB_KEY_XF86AudioRaiseVolume,  spawn,      {.v = volumeup} }, /* volume up */
-	{ 0,                    XKB_KEY_XF86AudioPrev,         spawn,      {.v = mediaback} }, /* media back */
-	{ 0,                    XKB_KEY_XF86AudioPause,        spawn,      {.v = mediatoggle} }, /* media pause */
-	{ 0,                    XKB_KEY_XF86AudioPlay,         spawn,      {.v = mediatoggle} }, /* media play */
-	{ 0,                    XKB_KEY_XF86AudioNext,         spawn,      {.v = medianext} }, /* media next */
+	{ 0,                    XKB_KEY_XF86MonBrightnessDown,      spawn,      {.v = brightnessdown} }, /* brightness down */
+	{ 0,                    XKB_KEY_XF86MonBrightnessUp,        spawn,      {.v = brightnessup} }, /* brightness up */
+	{ 0,                    XKB_KEY_XF86AudioMute,              spawn,      {.v = volumemute} }, /* mute */
+	{ 0,                    XKB_KEY_XF86AudioLowerVolume,       spawn,      {.v = volumedown} }, /* volume down */
+	{ 0,                    XKB_KEY_XF86AudioRaiseVolume,       spawn,      {.v = volumeup} }, /* volume up */
+	{ 0,                    XKB_KEY_XF86AudioPrev,              spawn,      {.v = mediaback} }, /* media back */
+	{ 0,                    XKB_KEY_XF86AudioStop,              spawn,      {.v = mediatoggle} }, /* media pause */
+	{ 0,                    XKB_KEY_XF86AudioPlay,              spawn,      {.v = mediatoggle} }, /* media play */
+	{ 0,                    XKB_KEY_XF86AudioNext,              spawn,      {.v = medianext} }, /* media next */
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
 	{ MODKEY,                    XKB_KEY_Return,     spawn,          {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} }, /* move focus up stack */
