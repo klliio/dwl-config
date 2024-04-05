@@ -45,7 +45,8 @@ static const char *const autostart[] = {
 static const Rule rules[] = {
 	/* app_id           title             tags mask  isfloating  monitor  scratchkey */
     { NULL,            "KeePassXC",       1 << 8,       0,       -1,      'P' }, /* uses xwayland */
-    { "Firefox",       NULL,              0,            0,       -1,      'B' }, /* uses xwayland */
+    { NULL,            "Obsidian",        0,            0,       -1,      'O' }, /* uses xwayland */
+    { "Firefox",       NULL,              0,            0,       -1,      'B' },
 };
 
 /* layout(s) */
@@ -158,6 +159,7 @@ static const char *medianext[]    = { "/home/klliio/.config/scripts/player-contr
 
 /* named scratchpads - First arg only serves to match against key in rules*/
 static const char *scratchkeepassxc[] = { "P", "keepassxc", NULL };
+static const char *scratchobsidian[] = { "O", "flatpak", "run", "md.obsidian.Obsidian", NULL };
 static const char *scratchfirefox[] = { "B", "firefox", NULL };
 
 static const Key keys[] = {
@@ -173,6 +175,7 @@ static const Key keys[] = {
 	{ 0,                    XKB_KEY_XF86AudioPlay,              spawn,      {.v = mediatoggle} }, /* media play */
 	{ 0,                    XKB_KEY_XF86AudioNext,              spawn,      {.v = medianext} }, /* media next */
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,          focusortogglescratch,     {.v = scratchkeepassxc } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_O,          focusortogglescratch,     {.v = scratchobsidian } },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,          focusortogglescratch,     {.v = scratchfirefox } },
 	{ MODKEY,                    XKB_KEY_p,          spawn,             {.v = menucmd} },
 	{ MODKEY,                    XKB_KEY_Return,     spawn,             {.v = termcmd} },
