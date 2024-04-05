@@ -5,7 +5,15 @@
                         (hex & 0xFF) / 255.0f }
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
-static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */ static const unsigned int borderpx         = 1;  /* border pixel of windows */ static const float rootcolor[]             = COLOR(0xf9e2afff); static const float bordercolor[]           = COLOR(0x00000000);
+static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
+static const int smartgaps                 = 0;  /* 1 means no outer gap when there is only one window */
+static const int monoclegaps               = 1;  /* 1 means outer gaps in monocle layout */
+static const unsigned int gappih           = 6; /* horiz inner gap between windows */
+static const unsigned int gappiv           = 6; /* vert inner gap between windows */
+static const unsigned int gappoh           = 6; /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov           = 6; /* vert outer gap between windows and screen edge */
+static const unsigned int borderpx         = 3;  /* border pixel of windows */
+static const float rootcolor[]             = COLOR(0xf9e2afff); static const float bordercolor[]           = COLOR(0x00000000);
 static const float focuscolor[]            = COLOR(0xcba6f7ff);
 static const float urgentcolor[]           = COLOR(0xf38ba8ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
@@ -163,28 +171,29 @@ static const Key keys[] = {
 	{ 0,                    XKB_KEY_XF86AudioStop,              spawn,      {.v = mediatoggle} }, /* media pause */
 	{ 0,                    XKB_KEY_XF86AudioPlay,              spawn,      {.v = mediatoggle} }, /* media play */
 	{ 0,                    XKB_KEY_XF86AudioNext,              spawn,      {.v = medianext} }, /* media next */
-	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
-	{ MODKEY,                    XKB_KEY_Return,     spawn,          {.v = termcmd} },
-	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} }, /* move focus up stack */
-	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} }, /* move focus down stack */
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_J,          movestack,      {.i = +1} }, /* move view up stack */
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_K,          movestack,      {.i = -1} }, /* move view down stack */
-	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} }, /* more views in master */
-	{ MODKEY,                    XKB_KEY_d,          incnmaster,     {.i = -1} }, /* less views in master */
-	{ MODKEY,                    XKB_KEY_h,          setmfact,       {.f = -0.05f} },
-	{ MODKEY,                    XKB_KEY_l,          setmfact,       {.f = +0.05f} },
-	{ MODKEY,                    XKB_KEY_space,       zoom,           {0} }, /* move view to top of stack */
-	{ MODKEY,                    XKB_KEY_w,          killclient,     {0} },
-	{ MODKEY,                    XKB_KEY_t,          setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                    XKB_KEY_m,          setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                    XKB_KEY_f,          togglefloating, {0} },
-	{ MODKEY,                    XKB_KEY_e,          togglefullscreen, {0} },
-	{ MODKEY,                    XKB_KEY_0,          view,           {.ui = ~0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright, tag,            {.ui = ~0} },
-	{ MODKEY,                    XKB_KEY_comma,      focusmon,       {.i = WLR_DIRECTION_LEFT} },
-	{ MODKEY,                    XKB_KEY_period,     focusmon,       {.i = WLR_DIRECTION_RIGHT} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_less,       tagmon,         {.i = WLR_DIRECTION_LEFT} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_greater,    tagmon,         {.i = WLR_DIRECTION_RIGHT} },
+	{ MODKEY,                    XKB_KEY_p,          spawn,             {.v = menucmd} },
+	{ MODKEY,                    XKB_KEY_Return,     spawn,             {.v = termcmd} },
+	{ MODKEY,                    XKB_KEY_j,          focusstack,        {.i = +1} }, /* move focus up stack */
+	{ MODKEY,                    XKB_KEY_k,          focusstack,        {.i = -1} }, /* move focus down stack */
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_J,          movestack,         {.i = +1} }, /* move view up stack */
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_K,          movestack,         {.i = -1} }, /* move view down stack */
+	{ MODKEY,                    XKB_KEY_i,          incnmaster,        {.i = +1} }, /* more views in master */
+	{ MODKEY,                    XKB_KEY_d,          incnmaster,        {.i = -1} }, /* less views in master */
+	{ MODKEY,                    XKB_KEY_h,          setmfact,          {.f = -0.05f} },
+	{ MODKEY,                    XKB_KEY_l,          setmfact,          {.f = +0.05f} },
+	{ MODKEY,                    XKB_KEY_space,       zoom,             {0} }, /* move view to top of stack */
+	{ MODKEY,                    XKB_KEY_w,          killclient,        {0} },
+	{ MODKEY,                    XKB_KEY_t,          setlayout,         {.v = &layouts[0]} },
+	{ MODKEY,                    XKB_KEY_m,          setlayout,         {.v = &layouts[2]} },
+	{ MODKEY,                    XKB_KEY_f,          togglefloating,    {0} },
+	{ MODKEY,                    XKB_KEY_e,          togglefullscreen,  {0} },
+	{ MODKEY,                    XKB_KEY_g,          togglegaps,        {0} },
+	{ MODKEY,                    XKB_KEY_0,          view,              {.ui = ~0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright, tag,               {.ui = ~0} },
+	{ MODKEY,                    XKB_KEY_comma,      focusmon,          {.i = WLR_DIRECTION_LEFT} },
+	{ MODKEY,                    XKB_KEY_period,     focusmon,          {.i = WLR_DIRECTION_RIGHT} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_less,       tagmon,            {.i = WLR_DIRECTION_LEFT} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_greater,    tagmon,            {.i = WLR_DIRECTION_RIGHT} },
 	TAGKEYS(          XKB_KEY_1, XKB_KEY_exclam,                     0),
 	TAGKEYS(          XKB_KEY_2, XKB_KEY_at,                         1),
 	TAGKEYS(          XKB_KEY_3, XKB_KEY_numbersign,                 2),
