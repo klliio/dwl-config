@@ -38,17 +38,14 @@ static const char *const autostart[] = {
         "udiskie", "--automount", "--notify", NULL,
         "/home/klliio/.config/scripts/gsettings.sh", NULL,
         "wbg", "/home/klliio/Images/Wallpapers/Apocalypse.png", NULL,
-        "keepassxc", NULL,
         NULL /* terminate */
 };
 
 
 static const Rule rules[] = {
-	/* app_id             title       tags mask     isfloating   monitor */
-	/* examples: */
-	// { "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
-	// { "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
-    { NULL,  "KeePassXC",       1 << 8,       0,           -1 }, /* uses xwayland */
+	/* app_id           title             tags mask  isfloating  monitor  scratchkey */
+    { NULL,            "KeePassXC",       1 << 8,       0,       -1,      'P' }, /* uses xwayland */
+    { "firefox",       NULL,              0,            0,       -1,      'B' }, /* uses xwayland */
 };
 
 /* layout(s) */
@@ -159,6 +156,10 @@ static const char *mediaback[]    = { "/home/klliio/.config/scripts/player-contr
 static const char *mediatoggle[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--toggle",     NULL };
 static const char *medianext[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--next",     NULL };
 
+/* named scratchpads - First arg only serves to match against key in rules*/
+static const char *scratchkeepassxc[] = { "P", "keepassxc", NULL };
+static const char *scratchfirefox[] = { "B", "firefox", NULL };
+
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
@@ -171,6 +172,8 @@ static const Key keys[] = {
 	{ 0,                    XKB_KEY_XF86AudioStop,              spawn,      {.v = mediatoggle} }, /* media pause */
 	{ 0,                    XKB_KEY_XF86AudioPlay,              spawn,      {.v = mediatoggle} }, /* media play */
 	{ 0,                    XKB_KEY_XF86AudioNext,              spawn,      {.v = medianext} }, /* media next */
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,          togglescratch,     {.v = scratchkeepassxc } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,          togglescratch,     {.v = scratchfirefox } },
 	{ MODKEY,                    XKB_KEY_p,          spawn,             {.v = menucmd} },
 	{ MODKEY,                    XKB_KEY_Return,     spawn,             {.v = termcmd} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,        {.i = +1} }, /* move focus up stack */
