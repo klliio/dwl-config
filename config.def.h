@@ -47,6 +47,8 @@ static const Rule rules[] = {
     { NULL,            "KeePassXC",       1 << 8,       0,       -1,      'P' }, /* uses xwayland */
     { NULL,            "Obsidian",        0,            0,       -1,      'O' }, /* uses xwayland */
     { "Firefox",       NULL,              0,            0,       -1,      'B' },
+    { "imv",           NULL,              0,            1,       -1,      NULL },
+    { "mpv",           NULL,              0,            1,       -1,      NULL },
 };
 
 /* layout(s) */
