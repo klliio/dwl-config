@@ -32,11 +32,9 @@ static const char *const autostart[] = {
         "pipewire-pulse", NULL,
         "/usr/libexec/polkit-gnome-authentication-agent-1", NULL,
         "mako", NULL,
-        "mpd", "/home/klliio//.config/mpd/mpd.conf", NULL,
         "blueman-applet", NULL,
         "/usr/bin/syncthing", "serve", "--no-browser", "--logfile=default", NULL,
         "udiskie", "--automount", "--notify", NULL,
-        "/home/klliio/.config/scripts/gsettings.sh", NULL,
         "wbg", "/home/klliio/Images/Wallpapers/Apocalypse.png", NULL,
         NULL /* terminate */
 };
