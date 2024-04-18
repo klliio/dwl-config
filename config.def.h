@@ -153,9 +153,9 @@ static const char *volumemute[]    = { "wpctl",   "set-mute",      "@DEFAULT_SIN
 static const char *volumedown[]    = { "wpctl",   "set-volume",    "@DEFAULT_AUDIO_SINK@",  "5%-",     NULL };
 static const char *volumeup[]      = { "wpctl",   "set-volume",    "-l",    "1",    "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
 
-static const char *mediaback[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--prev",     NULL };
-static const char *mediatoggle[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--toggle",     NULL };
-static const char *medianext[]    = { "/home/klliio/.config/scripts/player-controls.sh",   "--next",     NULL };
+static const char *mediaback[]    = { "playerctl",   "previous",     NULL };
+static const char *mediatoggle[]    = { "playerctl",    "play-pause",     NULL };
+static const char *medianext[]    = { "playerctl",   "next",     NULL };
 
 /* named scratchpads - First arg only serves to match against key in rules*/
 static const char *scratchkeepassxc[] = { "P", "keepassxc", NULL };
